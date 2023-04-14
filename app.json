@@ -3,6 +3,10 @@
     "name": "Trello",
     "slug": "Trello",
     "version": "1.0.0",
+    "extra": {
+      "api": "4479c9c6bfb13895fadde003ea33f1b3",
+      "token": "ATTA868298aedb40c683b8681fd54781e37a38b294ec16da2afa1348371d6ee4d6df006A8184"
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
