@@ -5,21 +5,20 @@ import List from '../components/List';
 import { Ionicons } from '@expo/vector-icons';
 
 
-const Board = ({ route }) => {
+const Board = ({ route, mockBoard, mockedLists }) => {
   const { boardId } = route.params;
 
+
   useEffect(() => {
-    loadBoard()
+    if (!mockBoard) loadBoard()
   }, [])
 
-  const [board, setBoard] = useState([])
-  const [lists, setLists] = useState([])
+  const [board, setBoard] = useState(mockBoard || [])
+  const [lists, setLists] = useState(mockedLists || [])
   const [dragging, setDragging] = useState(false)
 
-  
   const handleAddList = async () => {
     createList(boardId).then(res => loadBoard())
-    // setLists([...lists, newList])
   };
 
   const loadBoard = async () => {
@@ -29,27 +28,28 @@ const Board = ({ route }) => {
 
   return (
     <>
-      <View style={styles.container}>
+      <View style={styles.container} testID="boardComponent">
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Your lists of {board?.name}</Text>
           <View style={styles.addButtonContainer}>
-            <TouchableOpacity style={styles.button} onPress={handleAddList}>
+            <TouchableOpacity style={styles.button} onPress={handleAddList} testID="addListButton" >
               <Ionicons name="add" size={30} color="white" />
             </TouchableOpacity>
           </View>
         </View>
-        <Image source={{ uri: board?.prefs?.backgroundImageScaled[3].url }} style={styles.image} />
+        <Image source={{ uri: board?.prefs?.backgroundImageScaled[3]?.url }} style={styles.image} />
 
         <ScrollView scrollEnabled={!dragging}>
-          <View style={styles.containerCards}>
-            {lists.map((list, index) => (
-              <List key={index} list={list} setDragging={setDragging} loadBoard={loadBoard}></List>
+          <View style={styles.listContainer}>
+            {lists?.map((list, index) => (
+              <View key={index} style={styles.containerCards} testID='listComponent'>
+                <List key={index} list={list} setDragging={setDragging} loadBoard={loadBoard}  ></List>
+              </View>
             ))}
           </View>
-
         </ScrollView>
 
-        <TouchableOpacity style={styles.deleteButton}>
+        <TouchableOpacity style={styles.deleteButton} >
           <Text style={styles.buttonText}>Drag here to delete a list</Text>
         </TouchableOpacity>
       </View>
@@ -72,6 +72,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: '3%',
     paddingBottom: '3%',
+  },
+  listContainer: {
+    marginBottom: '25%'
   },
   title: {
     margin: 'auto',
@@ -97,8 +100,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: '5%',
     justifyContent: 'space-around',
-    marginBottom: '25%'
-
   },
   deleteButton: {
     position: 'absolute',

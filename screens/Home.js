@@ -3,20 +3,20 @@ import React, { useEffect, useState } from 'react'
 import { getAllBoards, getBoard } from '../api'
 import { useNavigation } from '@react-navigation/native'
 
-const Home = () => {
+const Home = ({ testBoards }) => {
     const navigation = useNavigation();
 
-    const [allBoards, setAllBoards] = useState([])
+    const [allBoards, setAllBoards] = useState(testBoards || []);
 
     const loadBoard = async () => {
         setAllBoards(await getAllBoards())
     }
 
-
-
     useEffect(() => {
-        loadBoard()
-    }, [])
+        if (!testBoards) {
+            loadBoard();
+        }
+    }, []);
 
     const handleBoardPress = (boardId) => {
         navigation.navigate('Board', { boardId });
@@ -24,10 +24,10 @@ const Home = () => {
 
 
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} testID="home-component">
             {allBoards.map(e => (
                 <View key={e.id} style={styles.card}>
-                    <TouchableOpacity onPress={() => handleBoardPress(e.id)}>
+                    <TouchableOpacity onPress={() => handleBoardPress(e.id)} testID={'navigateButton'}>
                         <Image source={{ uri: e.prefs.backgroundImageScaled[3].url }} style={styles.image} />
                         <Text style={styles.name}>{e.name}</Text>
                     </TouchableOpacity>

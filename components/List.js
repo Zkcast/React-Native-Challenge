@@ -19,7 +19,6 @@ const List = ({ list, loadBoard, setDragging }) => {
     }
 
     const [cards, setCards] = useState([])
-    const [deleted, setDeleted] = useState(false)
 
     const [editing, setEditing] = useState(false);
     const [newTitle, setNewTitle] = useState(list.name);
@@ -33,7 +32,7 @@ const List = ({ list, loadBoard, setDragging }) => {
 
     const handleDelete = async () => {
         try {
-            deleteList(list.id).then(res => loadBoard())
+            deleteList(list.id).then(res => { loadBoard(); pan.setValue({ x: 0, y: 0 }); })
         } catch (error) {
             console.error(error);
         }
@@ -44,11 +43,15 @@ const List = ({ list, loadBoard, setDragging }) => {
     }
 
     const handleEditListTitle = (newTitle) => {
-        updateListName(list.id, newTitle).then(res => { loadBoard(); setNewTitle(''), setEditing(false)})
+        updateListName(list.id, newTitle).then(res => {
+            loadBoard();
+            setNewTitle('');
+            setEditing(false);
+        })
     }
 
     const handleCreateCard = () => {
-        createCard(list.id, newCardTitle).then(res => {loadCards(), setNewCardTitle(''), setCreatingCard(false)})
+        createCard(list.id, newCardTitle).then(res => { loadCards(), setNewCardTitle(''), setCreatingCard(false) })
     }
 
     const panResponder = useRef(
@@ -83,7 +86,7 @@ const List = ({ list, loadBoard, setDragging }) => {
     return (
         <Animated.View
             {...panResponder.panHandlers}
-            style={[panStyle, styles.list, deleted && { display: 'none' }]}
+            style={[panStyle, styles.list]}
         >
 
             {editing ? (
@@ -100,7 +103,7 @@ const List = ({ list, loadBoard, setDragging }) => {
                 </TouchableOpacity>
             )}
 
-            {cards.map((card, index) => (
+            {cards?.map((card, index) => (
                 <Card key={index} card={card} listId={list.id} loadCards={loadCards}></Card>
             ))}
 

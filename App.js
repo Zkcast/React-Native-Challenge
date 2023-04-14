@@ -6,7 +6,6 @@ import Board from './screens/Board';
 import 'react-native-gesture-handler'
 
 const Stack = createNativeStackNavigator()
-
 export default function App() {
 
   return (

@@ -1,12 +1,11 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
 
-const api = Constants.expoConfig.extra.api;
-const token = Constants.expoConfig.extra.token;
+const api =  Constants.expoConfig?.extra.api;
+const token =  Constants.expoConfig?.extra.token;
 
 
 // Boards methods
-
 export const getBoard = async (id) => {
     const resp = await axios.get(`https://api.trello.com/1/boards/${id}?key=${api}&token=${token}`)
         .then(response => {
