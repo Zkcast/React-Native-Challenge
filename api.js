@@ -1,9 +1,8 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const api = '4479c9c6bfb13895fadde003ea33f1b3'
-const secret = 'a8596862212ac125efb901c545cfc0c8bb7bb964c6c8bc7cad1ad61dd481b653'
-const token = 'ATTA868298aedb40c683b8681fd54781e37a38b294ec16da2afa1348371d6ee4d6df006A8184'
-
+const api = Constants.expoConfig.extra.api;
+const token = Constants.expoConfig.extra.token;
 
 
 // Boards methods
